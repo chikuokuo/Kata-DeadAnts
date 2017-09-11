@@ -11,10 +11,10 @@ namespace DeadAnts
         [TestMethod]
         public void String_Empty_ShouldReturn_Zero()
         {
-            StringAverageShouldEqual(string.Empty, 0);
+            DeadAntsCalculateShouldEqual(string.Empty, 0);
         }
 
-        private static void StringAverageShouldEqual(string input, int expected)
+        private static void DeadAntsCalculateShouldEqual(string input, int expected)
         {
             DeadAnts deadAnts = new DeadAnts();
             var result = deadAnts.DeadAntsCalculate(input);
