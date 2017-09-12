@@ -28,14 +28,40 @@ namespace DeadAnts
             DeadAntsCalculateShouldEqual(string.Empty, 0);
         }
 
+        [TestMethod]
         public void String_ant_ShouldReturn_Zero()
         {
             DeadAntsCalculateShouldEqual("ant", 0);
         }
 
+        [TestMethod]
         public void String_antant_ShouldReturn_Zero()
         {
             DeadAntsCalculateShouldEqual("antant", 0);
+        }
+
+        [TestMethod]
+        public void String_anantant_ShouldReturn_Zero()
+        {
+            DeadAntsCalculateShouldEqual("anantant", 1);
+        }
+
+        [TestMethod]
+        public void String_anantantan_ShouldReturn_Zero()
+        {
+            DeadAntsCalculateShouldEqual("anantantan", 2);
+        }
+
+        [TestMethod]
+        public void String_anantantana_ShouldReturn_Zero()
+        {
+            DeadAntsCalculateShouldEqual("an ant ant an a", 3);
+        }
+
+        [TestMethod]
+        public void String_anantantanSeparatet_ShouldReturn_Zero()
+        {
+            DeadAntsCalculateShouldEqual("an .. ant. ant.. an.. t", 2);
         }
 
         private static void DeadAntsCalculateShouldEqual(string input, int expected)
@@ -51,11 +77,18 @@ namespace DeadAnts
     {
         public int DeadAntsCalculate(string antsTeam)
         {
-            if (antsTeam.Replace("ant","") == string.Empty)
+            var deadAnts = antsTeam.Replace("ant", "");
+            if (deadAnts == string.Empty)
             {
                 return 0;
             }
-            return 0;
+
+            var antBodyPart = deadAnts.ToCharArray();
+            var bodyACount = antBodyPart.Count(x => x == 'a');
+            var bodyNCount = antBodyPart.Count(x => x == 'n');
+            var bodyTCount = antBodyPart.Count(x => x == 't');
+
+            return new []{ bodyACount, bodyNCount, bodyTCount }.Max();
         }
     }
 }
