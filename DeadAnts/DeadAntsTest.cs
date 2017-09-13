@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DeadAnts
@@ -41,25 +42,25 @@ namespace DeadAnts
         }
 
         [TestMethod]
-        public void String_anantant_ShouldReturn_Zero()
+        public void String_anantant_ShouldReturn_One()
         {
             DeadAntsCalculateShouldEqual("anantant", 1);
         }
 
         [TestMethod]
-        public void String_anantantan_ShouldReturn_Zero()
+        public void String_anantantan_ShouldReturn_Two()
         {
             DeadAntsCalculateShouldEqual("anantantan", 2);
         }
 
         [TestMethod]
-        public void String_anantantana_ShouldReturn_Zero()
+        public void String_anantantana_ShouldReturn_Three()
         {
             DeadAntsCalculateShouldEqual("an ant ant an a", 3);
         }
 
         [TestMethod]
-        public void String_anantantanSeparatet_ShouldReturn_Zero()
+        public void String_anantantanSeparatet_ShouldReturn_Two()
         {
             DeadAntsCalculateShouldEqual("an .. ant. ant.. an.. t", 2);
         }
@@ -77,18 +78,14 @@ namespace DeadAnts
     {
         public int DeadAntsCalculate(string antsTeam)
         {
-            var deadAnts = antsTeam.Replace("ant", "");
+            var deadAnts = Regex.Replace(antsTeam.Replace("ant", ""), @"[^a-z]", "");
+
             if (deadAnts == string.Empty)
             {
                 return 0;
             }
 
-            var antBodyPart = deadAnts.ToCharArray();
-            var bodyACount = antBodyPart.Count(x => x == 'a');
-            var bodyNCount = antBodyPart.Count(x => x == 'n');
-            var bodyTCount = antBodyPart.Count(x => x == 't');
-
-            return new []{ bodyACount, bodyNCount, bodyTCount }.Max();
+            return deadAnts.GroupBy(antBody => antBody).Max(bodyGroup => bodyGroup.Count());
         }
     }
 }
