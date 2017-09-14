@@ -65,6 +65,16 @@ namespace DeadAnts
             DeadAntsCalculateShouldEqual("an .. ant. ant.. an.. t", 2);
         }
 
+        [TestMethod]
+        public void BasicTests()
+        {
+            DeadAnts deadAnts = new DeadAnts();
+            Assert.AreEqual(0, deadAnts.DeadAntsCalculate("ant ant ant ant"));
+            Assert.AreEqual(0, deadAnts.DeadAntsCalculate(null));
+            Assert.AreEqual(2, deadAnts.DeadAntsCalculate("ant anantt aantnt"));
+            Assert.AreEqual(1, deadAnts.DeadAntsCalculate("ant ant .... a nt"));
+        }
+
         private static void DeadAntsCalculateShouldEqual(string input, int expected)
         {
             DeadAnts deadAnts = new DeadAnts();
@@ -78,14 +88,11 @@ namespace DeadAnts
     {
         public int DeadAntsCalculate(string antsTeam)
         {
+            if (string.IsNullOrEmpty(antsTeam)) return 0;
+
             var deadAnts = Regex.Replace(antsTeam.Replace("ant", ""), @"[^a-z]", "");
 
-            if (deadAnts == string.Empty)
-            {
-                return 0;
-            }
-
-            return deadAnts.GroupBy(antBody => antBody).Max(bodyGroup => bodyGroup.Count());
+            return deadAnts == string.Empty ? 0 : deadAnts.GroupBy(antBody => antBody).Max(bodyGroup => bodyGroup.Count());
         }
     }
 }
